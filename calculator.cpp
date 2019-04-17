@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <cmath>
 
 using namespace std;
@@ -33,9 +34,10 @@ int main() {
     ifstream inFile ("largeNumbers.txt");
     ofstream outFile ("output.txt");
 
-    while (!inFile.eof()){
+  //  while (!inFile.eof()){
         // implement program logic here
-    }
+        loadNumber(inFile);
+  //  }
     outFile.close();
     inFile.close();
     return 0;
@@ -75,19 +77,53 @@ int digcmp(digit * left, digit * right){
 }
 
 digit * loadNumber(ifstream & file){
-    return nullptr;
+  digit * firstElement=nullptr;
+  char number[2];
+  int num;
+
+while(file.get(number[2]))  //while we haven't reached a new line in our text file
+{
+  if(number[2]=='\n')
+  break;
+  digit * node = new digit;   //Creating the linked list node here
+  //file.get(number[0]);  //get the first number in the text file as char
+  cout<<"char number:"<<number[2]<<endl;
+  num=atoi(number); //converts the char to int
+  cout<<"atoi NUM: "<<num<<" "<<endl;
+  node->data=num; //set the data value for the node as num
+
+}
+
+    return firstElement;  //return the pointer that points to the
+                          //first element in the linked list
 }
 
 char getOperator(ifstream & file){
     // hint: use get
+char oper;
+file.get(oper);   //get the operator in the text file
+return oper;
 }
 
 void printNumrecurse(digit * num){
-    return;
+if(num->next==NULL)
+{
+  return;
+}
+else
+{
+  cout<<num->data;
+  num=num->next;
+  printNumrecurse(num);
+}
 }
 
 void printNum(digit * num){
-    return;
+    while(num->next!=NULL)
+    {
+      cout<<num->data;
+      num=num->next;
+    }
 }
 
 void writeNumRecurse(digit * num, ofstream & file) {
