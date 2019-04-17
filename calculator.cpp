@@ -40,6 +40,7 @@ int main() {
   //  }
     outFile.close();
     inFile.close();
+
     return 0;
 }
 
@@ -81,16 +82,17 @@ digit * loadNumber(ifstream & file){
   char number[2];
   int num;
 
-while(file.get(number[2]))  //while we haven't reached a new line in our text file
+while(file.get(number[2]))  //while we can get the character in the text file...
 {
-  if(number[2]=='\n')
+  if(number[2]=='\n')   //If the number in the text file is a new line then break from the while loop.
   break;
-  digit * node = new digit;   //Creating the linked list node here
-  //file.get(number[0]);  //get the first number in the text file as char
-  cout<<"char number:"<<number[2]<<endl;
-  num=atoi(number); //converts the char to int
-  cout<<"atoi NUM: "<<num<<" "<<endl;
-  node->data=num; //set the data value for the node as num
+  num=(int)number[2]-'0';  //Casts the character from ASCII to int by subtracting the '0' character decimal value from the character value inside number[2]
+                            //EX: Our first number is 1...in ASCII '1' is 49 as a decimal. Since '0' in ASCII is 48 as decimal...49-48=1. This should
+                            //work for all numbers from 0-9.
+
+  digit * node = new digit;   //Creating the linked list node here.
+  node->data=num; //set the data value for the node as num.
+
 
 }
 
