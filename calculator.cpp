@@ -36,7 +36,9 @@ int main() {
 
   //  while (!inFile.eof()){
         // implement program logic here
-        loadNumber(inFile);
+        left=loadNumber(inFile);
+        cout<<left->data;
+
   //  }
     outFile.close();
     inFile.close();
@@ -78,7 +80,7 @@ int digcmp(digit * left, digit * right){
 }
 
 digit * loadNumber(ifstream & file){
-  digit * firstElement=nullptr;
+  digit * head=nullptr;
   char number[2];
   int num;
 
@@ -86,17 +88,17 @@ while(file.get(number[2]))  //while we can get the character in the text file...
 {
   if(number[2]=='\n')   //If the number in the text file is a new line then break from the while loop.
   break;
-  num=(int)number[2]-'0';  //Casts the character from ASCII to int by subtracting the '0' character decimal value from the character value inside number[2]
-                            //EX: Our first number is 1...in ASCII '1' is 49 as a decimal. Since '0' in ASCII is 48 as decimal...49-48=1. This should
-                            //work for all numbers from 0-9.
+  num=(int)number[2]-'0';  //Casts the character from ASCII to int by subtracting the '0' character decimal value from the character value
+                            // inside number[2].
+                            //EX: Our first number is 1...in ASCII '1' is 49 as a decimal. Since '0' in ASCII is 48 as decimal...49-48=1. 
+                            //This should work for all numbers from 0-9.
 
   digit * node = new digit;   //Creating the linked list node here.
-  node->data=num; //set the data value for the node as num.
-
-
+  node->data=num; //set the data value for the newly created node as num.
+  node->next=head;  //point the next ptr of the node to the head.
+  head=node;    //set the head as the newly created node.
 }
-
-    return firstElement;  //return the pointer that points to the
+    return head;  //return the pointer that points to the
                           //first element in the linked list
 }
 
