@@ -33,15 +33,24 @@ int main() {
     digit * left, * right, * result;
     ifstream inFile ("largeNumbers.txt");
     ofstream outFile ("output.txt");
-
+    char anOperator;
   //  while (!inFile.eof()){
         // implement program logic here
         left=loadNumber(inFile);
-        cout<<left->data;
-
+        right=loadNumber(inFile);
+        anOperator=getOperator(inFile);
+        if(anOperator=='+')
+        {
+            result=addNumbers(left, right);
+        }
+      //  writeNumRecurse(result, outFile);
   //  }
     outFile.close();
     inFile.close();
+
+deleteNumber(left);
+deleteNumber(right);
+deleteNumber(result);
 
     return 0;
 }
@@ -81,16 +90,16 @@ int digcmp(digit * left, digit * right){
 
 digit * loadNumber(ifstream & file){
   digit * head=nullptr;
-  char number[2];
+  char number;
   int num;
 
-while(file.get(number[2]))  //while we can get the character in the text file...
+while(file.get(number))  //while we can get the character in the text file...
 {
-  if(number[2]=='\n')   //If the number in the text file is a new line then break from the while loop.
+  if(number=='\n')   //If the number in the text file is a new line then break from the while loop.
   break;
-  num=(int)number[2]-'0';  //Casts the character from ASCII to int by subtracting the '0' character decimal value from the character value
-                            // inside number[2].
-                            //EX: Our first number is 1...in ASCII '1' is 49 as a decimal. Since '0' in ASCII is 48 as decimal...49-48=1. 
+  num=(int)number-'0';  //Casts the character from ASCII to int by subtracting the '0' character decimal value from the character value
+                            // inside number.
+                            //EX: Our first number is 1...in ASCII '1' is 49 as a decimal. Since '0' in ASCII is 48 as decimal...49-48=1.
                             //This should work for all numbers from 0-9.
 
   digit * node = new digit;   //Creating the linked list node here.
@@ -103,15 +112,15 @@ while(file.get(number[2]))  //while we can get the character in the text file...
 }
 
 char getOperator(ifstream & file){
-    // hint: use get
 char oper;
-file.get(oper);   //get the operator in the text file
+file.get(oper);
 return oper;
 }
 
 void printNumrecurse(digit * num){
-if(num->next==NULL)
+if(num==nullptr)
 {
+  cout<<endl;
   return;
 }
 else
@@ -121,9 +130,9 @@ else
   printNumrecurse(num);
 }
 }
-
+//The print numrecurse does the same as printNum...
 void printNum(digit * num){
-    while(num->next!=NULL)
+    while(!num)
     {
       cout<<num->data;
       num=num->next;
@@ -131,19 +140,61 @@ void printNum(digit * num){
 }
 
 void writeNumRecurse(digit * num, ofstream & file) {
-    return;
+if(num==NULL)
+{
+  return;
+}
+else
+{
+  file<<num->data;
+  num=num->next;
+  writeNumRecurse(num, file);
+}
 }
 
 void writeNumber(digit * num, ofstream & file){
+
     return;
 }
 
 void deleteNumber(digit * num){
+  while(num!=NULL)
+  {
+    delete num;
+    num=num->next;
+  }
+  num=NULL;
     return;
 }
 
 digit * addNumbers(digit * left, digit * right){
-    return nullptr;
+  int result, carry=0;
+  digit * head=nullptr;
+
+  while(left!=NULL && right!=NULL)
+  {
+    //Add the numbers passed in by the linked list and set it equal to result.
+  //  result=(left->data)+(right->data);
+
+    if(((left->data)+(right->data))>9)
+    {
+
+    }
+    else
+    {
+
+    }
+
+
+    digit * newnode=new digit;  //create a new linked list which will contain
+                                //the result of adding the two numbers.
+    newnode->data=result;
+    newnode->next=head;
+    head=newnode;
+    left=left->next;
+    right=right->next;
+  }
+    return head;
 }
 
 void subCarry(digit * head, digit * prev){
