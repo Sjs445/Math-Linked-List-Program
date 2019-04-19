@@ -28,6 +28,8 @@ void setNeg(digit * num);
 void printNum(digit * num);
 void printNumrecurse(digit * num);
 void subCarry(digit * head, digit * prev);
+int addCarry(digit * left, digit * right, int carry);
+digit * addNode(int num, digit * head);
 
 int main() {
     digit * left, * right, * result;
@@ -43,7 +45,7 @@ int main() {
         {
             result=addNumbers(left, right);
         }
-      //  writeNumRecurse(result, outFile);
+        writeNumRecurse(result, outFile);
   //  }
     outFile.close();
     inFile.close();
@@ -161,6 +163,7 @@ void deleteNumber(digit * num){
   while(num!=NULL)
   {
     delete num;
+    
     num=num->next;
   }
   num=NULL;
@@ -173,28 +176,49 @@ digit * addNumbers(digit * left, digit * right){
 
   while(left!=NULL && right!=NULL)
   {
-    //Add the numbers passed in by the linked list and set it equal to result.
-  //  result=(left->data)+(right->data);
-
+    digit * newnode=new digit;  //create a new linked list which will contain
+                                //the result of adding the two numbers.
     if(((left->data)+(right->data))>9)
     {
-
+      result=addCarry(left, right, carry);
+      carry=(left->data+right->data)/10;
+      head=addNode(result, head);
     }
     else
     {
-
+      result=left->data+right->data+carry;
+      head=addNode(result, head);
+      carry=0;
     }
-
-
-    digit * newnode=new digit;  //create a new linked list which will contain
-                                //the result of adding the two numbers.
-    newnode->data=result;
-    newnode->next=head;
-    head=newnode;
     left=left->next;
     right=right->next;
   }
+
+  if(carry==0)
+  {
     return head;
+  }
+  else
+  {
+    head=addNode(carry, head);
+    return head;
+  }
+}
+
+digit * addNode(int num, digit * head)
+{
+  digit * node=new digit;
+  node->data=num;
+  node->next=head;
+  head=node;
+  return head;
+}
+
+int addCarry(digit * left, digit * right, int carry)
+{
+  int result=left->data+right->data+carry;
+  result=result-10;
+  return result;
 }
 
 void subCarry(digit * head, digit * prev){
