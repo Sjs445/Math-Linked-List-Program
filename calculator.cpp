@@ -30,13 +30,16 @@ void printNumrecurse(digit * num);
 void subCarry(digit * head, digit * prev);
 int addCarry(digit * left, digit * right, int carry);
 digit * addNode(int num, digit * head);
+int getSizeDifference(digit * left, digit * right);
+digit * addTail(digit * head, int num);
+int getSize(digit * head);
 
 int main() {
     digit * left, * right, * result;
     ifstream inFile ("largeNumbers.txt");
     ofstream outFile ("output.txt");
     char anOperator;
-  //  while (!inFile.eof()){
+    while (!inFile.eof()){
         // implement program logic here
         left=loadNumber(inFile);
         right=loadNumber(inFile);
@@ -45,15 +48,14 @@ int main() {
         {
             result=addNumbers(left, right);
         }
-        writeNumRecurse(result, outFile);
-  //  }
+    }
+    writeNumRecurse(result, outFile);
     outFile.close();
     inFile.close();
-
 deleteNumber(left);
 deleteNumber(right);
 deleteNumber(result);
-
+cout<<"test";
     return 0;
 }
 
@@ -160,10 +162,10 @@ void writeNumber(digit * num, ofstream & file){
 }
 
 void deleteNumber(digit * num){
-  while(num!=NULL)
+  while(num->next!=NULL)
   {
     delete num;
-    
+    num->next=NULL;
     num=num->next;
   }
   num=NULL;
@@ -171,8 +173,24 @@ void deleteNumber(digit * num){
 }
 
 digit * addNumbers(digit * left, digit * right){
-  int result, carry=0;
+  int result, carry=0, sizedifference, size1, size2;
   digit * head=nullptr;
+
+sizedifference=getSizeDifference(left, right);
+if(getSize(left) < getSize(right))
+{
+  for(int i=0; i<sizedifference; i++)
+  {
+      left=addTail(left, 0);
+  }
+}
+else if(getSize(right)<getSize(left))
+{
+  for(int i=0; i<sizedifference; i++)
+  {
+    right=addTail(right, 0);
+  }
+}
 
   while(left!=NULL && right!=NULL)
   {
@@ -204,6 +222,66 @@ digit * addNumbers(digit * left, digit * right){
     return head;
   }
 }
+
+int getSize(digit * head)
+{
+  int count=0;
+  while(head!=NULL)
+  {
+    count++;
+    head=head->next;
+  }
+  return count;
+}
+
+digit * addTail(digit * head, int num)
+{
+  digit * node = new digit;
+  node->data=num;
+  digit * tail=head;
+  if(head==NULL)
+  {
+    head=node;
+  }
+  else
+  {
+    while(tail->next!=NULL)
+    {
+      tail=tail->next;
+    }
+    tail->next=node;
+  }
+  return head;
+}
+
+int getSizeDifference(digit * left, digit * right)
+{
+  int size1=0, size2=0;
+  while(left!=NULL)
+  {
+    size1++;
+    left=left->next;
+  }
+  while(right!=NULL)
+  {
+    size2++;
+    right=right->next;
+  }
+  if(size1>size2)
+  {
+    return(size1-size2);
+  }
+  else if(size2>size1)
+  {
+    return(size2-size1);
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+
 
 digit * addNode(int num, digit * head)
 {
